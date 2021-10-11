@@ -4,6 +4,6 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 // 此时 process.env 里面就会有.env文件里面的属性了
-console.log(process.env.APP_PORT)
+// console.log(process.env.APP_PORT)
 
 module.exports = process.env
