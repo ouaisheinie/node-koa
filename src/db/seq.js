@@ -16,10 +16,11 @@ const seq = new Sequelize(MYSQL_DB, MYSQL_USER, MYSQL_PWD, {
   dialect: 'mysql'
 })
 
-seq.authenticate().then(() => {
+// 只是测试连接与否的代码
+/* seq.authenticate().then(() => {
   console.log('数据连接成功')
 }).catch((err) => {
   console.log('数据库连接失败', err)
-})
+}) */
 
-module.exports = seq // 到处数据库对象
+module.exports = seq // 这是导出数据库对象 在model内用
