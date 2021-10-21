@@ -20,6 +20,7 @@ const verify_user = async (ctx, next) => {
   const { user_name } = ctx.request.body
   if (getUserInfo({ user_name })) {
     ctx.status = 409
+    // 下面这段逻辑 对应emit了
     // ctx.body = {
     //   code: '10002',
     //   message: '用户名已经存在',
