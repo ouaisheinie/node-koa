@@ -44,3 +44,14 @@ git init
   　　⑥修改密码：alter user 'root'@'localhost' identified by 'root';(by 接着的是密码)
   
   　　⑦标记删除mysql服务：sc delete mysql
+
+## 代码逻辑路径
+
+  src文件夹下各个目录
+
+  1. 服务 main.js
+  2. 入口 app/index.js
+  3. 路由 router
+  4. 接口逻辑 controller (错误处理在middleware)
+  5. 数据库操作service
+  6. 数据库连接逻辑db, 数据库加表model
