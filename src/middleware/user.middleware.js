@@ -1,5 +1,5 @@
 const { getUserInfo } = require('../service/user.service')
-const { userFormatError, userAlreadyExited } = require('../consitant/error.type')
+const { userFormatError, userAlreadyExited } = require('../constant/error.type')
 
 // 判断用户名和密码是否都填写
 const user_validator = async (ctx, next) => {
@@ -18,14 +18,15 @@ const user_validator = async (ctx, next) => {
 // 判断用户名不重复
 const verify_user = async (ctx, next) => {
   const { user_name } = ctx.request.body
-  if (getUserInfo({ user_name })) {
-    ctx.status = 409
-    // 下面这段逻辑 对应emit了
-    // ctx.body = {
-    //   code: '10002',
-    //   message: '用户名已经存在',
-    //   result: ''
-    // }
+  try {
+    const res = await getUserInfo({ user_name })
+    if (res) {
+      console.error('用户名已经存在', { user_name })
+      ctx.app.emit('error', userAlreadyExited, ctx)
+      return
+    }
+  } catch (error) {
+    console.error('获取用户信息错误', error)
     ctx.app.emit('error', userAlreadyExited, ctx)
     return
   }

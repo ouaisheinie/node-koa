@@ -5,7 +5,7 @@ class UserService {
   async createUser(user_name, password) {
     // 往数据库插入数据
     const res = await User.create({ user_name, password })
-    // console.log(res)
+    
     return res.dataValues
   }
 
