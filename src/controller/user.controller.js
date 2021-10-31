@@ -12,7 +12,7 @@ class UserController {
       // 3.返回结果
       ctx.body = {
         code: 0,
-        message: '注册成功',
+        message: '用户注册成功',
         result: {
           id: res.id,
           user_name: res.user_name
