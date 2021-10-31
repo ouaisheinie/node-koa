@@ -1,4 +1,4 @@
-const bcrypt = require('bcrybtjs')
+const bcrypt = require('bcryptjs')
 const { getUserInfo } = require('../service/user.service')
 const { userFormatError, userAlreadyExited, userDoesNotExist } = require('../constant/error.type')
 
@@ -37,14 +37,17 @@ const verify_user = async (ctx, next) => {
 
 // crypt 加密中间件
 const crypt_password = async (ctx, next) => {
-  const { password } = ctx.request.body
-  const salt = bcrypt.getSaltSync(10) // 10次同步加盐
-  // 这个hash保存的是加盐后的密文
-  const hash = bcrypt.hashSync(password, salt) // 明文密码加盐
-
-  ctx.request.body.password = hash // 覆盖掉密码
-
-  await next()
+  try {
+    const { password } = ctx.request.body
+    const salt = bcrypt.genSaltSync(10) // 10次同步加盐
+    // 这个hash保存的是加盐后的密文
+    const hash = bcrypt.hashSync(password, salt) // 明文密码加盐
+  
+    ctx.request.body.password = hash // 覆盖掉密码
+    await next()
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 module.exports = {
