@@ -1,5 +1,6 @@
+const bcrypt = require('bcrybtjs')
 const { getUserInfo } = require('../service/user.service')
-const { userFormatError, userAlreadyExited } = require('../constant/error.type')
+const { userFormatError, userAlreadyExited, userDoesNotExist } = require('../constant/error.type')
 
 // 判断用户名和密码是否都填写
 const user_validator = async (ctx, next) => {
@@ -15,7 +16,7 @@ const user_validator = async (ctx, next) => {
   await next()
 }
 
-// 判断用户名不重复
+// 注册 判断用户名不重复
 const verify_user = async (ctx, next) => {
   const { user_name } = ctx.request.body
   try {
@@ -34,7 +35,20 @@ const verify_user = async (ctx, next) => {
   await next()
 }
 
+// crypt 加密中间件
+const crypt_password = async (ctx, next) => {
+  const { password } = ctx.request.body
+  const salt = bcrypt.getSaltSync(10) // 10次同步加盐
+  // 这个hash保存的是加盐后的密文
+  const hash = bcrypt.hashSync(password, salt) // 明文密码加盐
+
+  ctx.request.body.password = hash // 覆盖掉密码
+
+  await next()
+}
+
 module.exports = {
   user_validator,
-  verify_user
+  verify_user,
+  crypt_password
 }
