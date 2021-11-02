@@ -1,5 +1,7 @@
-const { createUser } = require('../service/user.service')
+const jwt = require('jsonwebtoken')
+const { createUser, getUserInfo } = require('../service/user.service')
 const { userRegisterError } = require('../constant/error.type')
+const { JWT_SECRET } = require('../config/config.default')
 
 class UserController {
   async register(ctx, next) {
@@ -26,8 +28,20 @@ class UserController {
 
   async login(ctx, body) {
     const { user_name } = ctx.request.body
+    // 登录成功后 颁发令牌 token 用户在以后每一次请求都携带令牌 使用jwt(json web token)来颁发令牌
+    // 1.获取用户信息 (在token的playload中需要包含用户信息，id user_name is_admin)
+    try {
+      const res = await getUserInfo({ user_name })
+      const { password, ...resUser } = res
+      ctx.body = {
+        code: 0,
+        message: '用户登录成功',
+        result: jwt.sign(resUser, JWT_SECRET, {expiresIn: '1d' })
+      }
+    } catch (error) {
+      console.error('用户登录失败', error)
+    }
 
-    ctx.body = `欢迎回来，${user_name}。`
   }
 }
  
