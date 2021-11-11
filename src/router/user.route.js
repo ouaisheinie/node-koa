@@ -13,10 +13,6 @@ router.post('/login', user_validator, verify_login, login)
 
 // 修改密码接口
 router.patch('/', auth, (ctx, next) => { // 先调用auth
-  // 获取token
-  const { authorization } = ctx.request.header
-  const token = authorization.replace('Bearer ', '')
-  // 拿到token 验签
   console.log(ctx.state.user) // 早auth中间件里面 添加到ctx.state.user里的
   ctx.body = '用户修改密码成功'
 })
