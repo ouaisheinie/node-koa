@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require('../config/config.default')
-const { tokenExpiredError, invalidToken } = require('../constant/error.type')
+const { tokenExpiredError, invalidToken, hasNotAdminPermission } = require('../constant/error.type')
 
 // 验证用户是否登录有token的中间件
 const auth = async (ctx, next) => {
@@ -9,7 +9,7 @@ const auth = async (ctx, next) => {
   // jwt verify验证token
   try {
     const user = jwt.verify(token, JWT_SECRET) // user中包含了 payload信息 主要有 id username isadmin
-    ctx.state.user = user
+    ctx.state.user = user // 验证成功后 把用户信息user 加到了 ctx.state.user中
   } catch (error) {
     switch(error.name) {
       case 'TokenExpiredError':
@@ -23,6 +23,18 @@ const auth = async (ctx, next) => {
   await next()
 }
 
+// 判断用户是否拥有管理员权限
+const hadAdminPermission = async(ctx, next) => {
+  const { is_admin } = ctx.state.user // auth里面放进去的
+  if (!is_admin) { // 无权限
+    console.error('该用户没有管理员权限', ctx.state.user)
+    return ctx.app.emit('error', hasNotAdminPermission, ctx)
+  }
+  // 有权限就放行
+  await next()
+}
+
 module.exports = {
-  auth
+  auth,
+  hadAdminPermission
 }
