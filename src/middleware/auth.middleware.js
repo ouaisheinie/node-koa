@@ -4,7 +4,7 @@ const { tokenExpiredError, invalidToken, hasNotAdminPermission } = require('../c
 
 // 验证用户是否登录有token的中间件
 const auth = async (ctx, next) => {
-  const { authorization } = ctx.request.header
+  const { authorization = '' } = ctx.request.header
   const token = authorization.replace('Bearer ', '')
   // jwt verify验证token
   try {

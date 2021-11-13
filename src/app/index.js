@@ -1,11 +1,25 @@
+const path = require('path')
+
 const Koa = require('koa')
 const KoaBody = require('koa-body')
+const KoaStatic = require('koa-static') // 处理服务器静态资源的
+
 const errorHandler = require('./error.handler')
+
 // 导入路由
 const router = require('../router')
 
 const app = new Koa()
-app.use(KoaBody()) // 在所有的路由之前注册koa-body 把传过来的数据 全写到ctx.request.body里面
+app.use(KoaBody({
+  // multipart formidable 两个配置让koabody开启文件上传
+  multipart: true,
+  formidable: {
+    // 在配置中最好用node path路径
+    uploadDir: path.join(__dirname, '../upload'),
+    keepExtensions: true
+  }
+})) // 在所有的路由之前注册koa-body 把传过来的数据 全写到ctx.request.body里面
+.use(KoaStatic(path.join(__dirname, '../upload')))
 .use(router.routes()) // 使用路由
 .use(router.allowedMethods()) // 对不支持的请求方式会返回正确状态405、501等。 不会只有404not found
 .on('error', errorHandler) // 监听错误 调用错误处理函数
