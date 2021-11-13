@@ -14,9 +14,7 @@ app.use(KoaBody({
   // multipart formidable 两个配置让koabody开启文件上传
   multipart: true,
   formidable: {
-    // 在配置中最好用node path路径
-    uploadDir: path.join(__dirname, '../upload'),
-    keepExtensions: true
+    maxFileSize: 2 * 1024 * 1024
   }
 })) // 在所有的路由之前注册koa-body 把传过来的数据 全写到ctx.request.body里面
 .use(KoaStatic(path.join(__dirname, '../upload')))
