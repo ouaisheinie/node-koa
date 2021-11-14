@@ -60,5 +60,20 @@ module.exports = {
     code: '10301',
     message: '上传接口参数错误',
     result: ''
+  },
+  publishGoodsError: {
+    code: '10302',
+    message: '发布商品失败',
+    result: ''
+  },
+  updateGoodsError: {
+    code: '10303',
+    message: '修改商品失败',
+    result: ''
+  },
+  invalidGoodsId: {
+    code: '10304',
+    message: '无效的商品',
+    result: ''
   }
 }
