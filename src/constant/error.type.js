@@ -55,5 +55,10 @@ module.exports = {
     code: '10202',
     message: '不支持的文件格式',
     result: ''
+  },
+  goodsFormatError: {
+    code: '10301',
+    message: '上传接口参数错误',
+    result: ''
   }
 }
