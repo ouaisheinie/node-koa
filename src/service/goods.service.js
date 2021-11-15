@@ -17,11 +17,20 @@ class GoodsService {
     return res[0] > 0 ? true : false
   }
 
+  
+  // 删除、下架商品
   async removeGoods(id) {
     // 这里 destory返回的res 是 数字
     const res = await Goods.destroy({ where: { id } })
     return res > 0 ? true : false
   }
+
+  // 上架商品
+  async restoreGoods(id) {
+    const res = await Goods.restore({ where: { id }})
+    return res > 0 ? true : false
+  }
+
 }
 
 module.exports = new GoodsService()

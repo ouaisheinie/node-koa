@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
-const { fileUploadError, unSupportedFileType, publishGoodsError, updateGoodsError, invalidGoodsId, deleteGoodsError } = require('../constant/error.type')
-const { createGoods, updateGoods, removeGoods } = require('../service/goods.service')
+const { fileUploadError, unSupportedFileType, publishGoodsError, updateGoodsError, invalidGoodsId, deleteGoodsError, GoodsOnSaleError } = require('../constant/error.type')
+const { createGoods, updateGoods, removeGoods, restoreGoods } = require('../service/goods.service')
 
 class GoodsController {
   // node 文件上传 实际生产中是要传图片到第三方cdn的
@@ -34,10 +34,11 @@ class GoodsController {
     // 直接调用service 的 createGoods 把数据插入数据库
     try {
       const res = await createGoods(ctx.request.body)
+      const { updatedAt, createdAt, ...data } = res
       ctx.body = {
         code: 0,
         message: '发布商品成功',
-        result: res
+        result: data
       }
     } catch (error) {
       console.error(error)
@@ -68,13 +69,29 @@ class GoodsController {
       if (res) {
         ctx.body = {
           code: 0,
-          message: '删除商品成功',
+          message: '下架商品成功',
           result: ''
         }
       } else return ctx.app.emit('error', invalidGoodsId, ctx)
     } catch (error) {
       console.error(error)
       return ctx.app.emit('error', deleteGoodsError, ctx)
+    }
+  }
+
+  async restore(ctx) {
+    try {
+      const res = await restoreGoods(ctx.params.id)
+      if (res) {
+        ctx.body = {
+          code: 0,
+          message: '商品上架成功',
+          result: ''
+        }
+      } else return ctx.app.emit('error', invalidGoodsId, ctx)
+    } catch (error) {
+      console.error(error)
+      return ctx.app.emit('error', GoodsOnSaleError, ctx)
     }
   }
 }

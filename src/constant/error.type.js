@@ -80,5 +80,10 @@ module.exports = {
     code: '10305',
     message: '删除商品失败',
     result: ''
+  },
+  GoodsOnSaleError: {
+    code: '10306',
+    message: '上架商品失败',
+    result: ''
   }
 }

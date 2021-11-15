@@ -36,7 +36,7 @@ class UserController {
       ctx.body = {
         code: 0,
         message: '用户登录成功',
-        result: jwt.sign(resUser, JWT_SECRET, {expiresIn: '10d' })
+        result: jwt.sign(resUser, JWT_SECRET, { expiresIn: '10d' })
       }
     } catch (error) {
       console.error('用户登录失败', error)

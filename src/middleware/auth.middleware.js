@@ -13,7 +13,7 @@ const auth = async (ctx, next) => {
   } catch (error) {
     switch(error.name) {
       case 'TokenExpiredError':
-        console.error('token已过期', error)
+        // console.error('token已过期', error)
         return ctx.app.emit('error', tokenExpiredError, ctx)
       case 'JsonWebTokenError':
         console.error('无效的token', error)

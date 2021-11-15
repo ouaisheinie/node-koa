@@ -26,7 +26,7 @@ const Goods = seq.define('zy_goods', {
     comment: '商品图片url'
   }
 }, {
-  timestamps: false, // 不会再表内自动创建时间戳
+  paranoid: true, // 用于软删除
 })
 
 // 强制同步数据库 看情况开 创建数据表 只执行第一次就行了
