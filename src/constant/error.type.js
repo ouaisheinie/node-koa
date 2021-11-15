@@ -75,5 +75,10 @@ module.exports = {
     code: '10304',
     message: '无效的商品',
     result: ''
+  },
+  deleteGoodsError: {
+    code: '10305',
+    message: '删除商品失败',
+    result: ''
   }
 }

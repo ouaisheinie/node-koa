@@ -8,12 +8,19 @@ class GoodsService {
   }
 
   async updateGoods(id, goods) {
+    // update返回的res 是数组
     const res = await Goods.update(goods, { // goods 要修改为啥样子的对象
       where: {
         id
       }
     })
     return res[0] > 0 ? true : false
+  }
+
+  async removeGoods(id) {
+    // 这里 destory返回的res 是 数字
+    const res = await Goods.destroy({ where: { id } })
+    return res > 0 ? true : false
   }
 }
 

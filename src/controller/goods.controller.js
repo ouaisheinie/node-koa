@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
-const { fileUploadError, unSupportedFileType, publishGoodsError, updateGoodsError, invalidGoodsId } = require('../constant/error.type')
-const { createGoods, updateGoods } = require('../service/goods.service')
+const { fileUploadError, unSupportedFileType, publishGoodsError, updateGoodsError, invalidGoodsId, deleteGoodsError } = require('../constant/error.type')
+const { createGoods, updateGoods, removeGoods } = require('../service/goods.service')
 
 class GoodsController {
   // node 文件上传 实际生产中是要传图片到第三方cdn的
@@ -34,11 +34,10 @@ class GoodsController {
     // 直接调用service 的 createGoods 把数据插入数据库
     try {
       const res = await createGoods(ctx.request.body)
-      const { createdAt, updatedAt, ...data } = res
       ctx.body = {
         code: 0,
         message: '发布商品成功',
-        result: data
+        result: res
       }
     } catch (error) {
       console.error(error)
@@ -60,6 +59,22 @@ class GoodsController {
     } catch (error) {
       console.error(error)
       return ctx.app.emit('error', updateGoodsError, ctx)
+    }
+  }
+
+  async remove(ctx) {
+    try {
+      const res = await removeGoods(ctx.params.id)
+      if (res) {
+        ctx.body = {
+          code: 0,
+          message: '删除商品成功',
+          result: ''
+        }
+      } else return ctx.app.emit('error', invalidGoodsId, ctx)
+    } catch (error) {
+      console.error(error)
+      return ctx.app.emit('error', deleteGoodsError, ctx)
     }
   }
 }
