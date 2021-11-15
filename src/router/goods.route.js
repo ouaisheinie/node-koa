@@ -1,5 +1,5 @@
 const Router = require('koa-router')
-const { upload, create, update, remove, restore } = require('../controller/goods.controller')
+const { upload, create, update, remove, restore, findAll } = require('../controller/goods.controller')
 const { auth, hadAdminPermission } = require('../middleware/auth.middleware')
 const { validator } = require('../middleware/goods.middleware')
 
@@ -23,5 +23,8 @@ router.post('/:id/off', auth, hadAdminPermission, remove)
 
 // 下架商品商家
 router.post('/:id/on', auth, hadAdminPermission, restore)
+
+// 获取商品列表 默认 pageNum = 1 pageSize = 10
+router.get('/', findAll)
 
 module.exports = router

@@ -31,6 +31,28 @@ class GoodsService {
     return res > 0 ? true : false
   }
 
+  async findGoods(pageNum, pageSize) {
+   /*  // 1. 获取总数
+    const count = await Goods.count() // 总数 这里 sequelize已经帮你剔除了软删除的数据了
+    // 2. 获取分页数据
+    const rows = await Goods.findAll({
+      offset: (pageNum - 1) * pageSize,
+      limit: pageSize * 1, // 转数字
+    }) */
+
+    // findAndCountAll方法就是结合了上面的count 和 findAll  效果是一样的
+    const { count, rows } = await Goods.findAndCountAll({
+      offset: (pageNum - 1) * 10,
+      limit: pageSize * 1
+    })
+
+    return {
+      pageNum,
+      pageSize,
+      total: count,
+      list: rows
+    }
+  }
 }
 
 module.exports = new GoodsService()

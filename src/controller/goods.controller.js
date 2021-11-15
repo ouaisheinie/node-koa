@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const { fileUploadError, unSupportedFileType, publishGoodsError, updateGoodsError, invalidGoodsId, deleteGoodsError, GoodsOnSaleError } = require('../constant/error.type')
-const { createGoods, updateGoods, removeGoods, restoreGoods } = require('../service/goods.service')
+const { createGoods, updateGoods, removeGoods, restoreGoods, findGoods } = require('../service/goods.service')
 
 class GoodsController {
   // node 文件上传 实际生产中是要传图片到第三方cdn的
@@ -92,6 +92,19 @@ class GoodsController {
     } catch (error) {
       console.error(error)
       return ctx.app.emit('error', GoodsOnSaleError, ctx)
+    }
+  }
+
+  async findAll(ctx) {
+    // 1. 解析 pageNum 和 pageSize
+    const { pageNum = 1, pageSize = 10 } = ctx.request.query // query 就是get请求路径参数里的
+    // 2. 调用数据处理的相关方法
+    const res = await findGoods(pageNum, pageSize)
+    // 3. 返回结果
+    ctx.body = {
+      code: 0,
+      message: '获取数据成功',
+      result: res
     }
   }
 }
