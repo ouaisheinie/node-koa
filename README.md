@@ -55,3 +55,7 @@ git init
   4. 接口逻辑 controller (错误处理在middleware)
   5. 数据库操作service
   6. 数据库连接逻辑db, 数据库加表model
+
+## 联表查询
+
+cart模块中的findCarts，对数据库进行联表查询

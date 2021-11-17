@@ -1,6 +1,7 @@
 // 操作购物车数据库表的类
 const Cart = require('../model/cart.model')
 const { Op } = require('sequelize')
+const Goods = require('../model/goods.model')
 
 class CartService {
   async createOrUpdate(user_id, goods_id) {
@@ -23,6 +24,28 @@ class CartService {
         goods_id,
         // number selected 有默认值
       })
+    }
+  }
+
+  // 包含关联表 这个在购物车表中有goods_id关联到商品表 关联表的作用就是查找购物车列表时直接把对应id的goods表内的信息获取到
+  async findCarts(pageNum, pageSize) {
+    const offset = (pageNum - 1) * pageSize
+    const { count, rows } = await Cart.findAndCountAll({
+      attributes: ['id', 'number', 'selected'],
+      offset: offset,
+      limit: pageSize * 1,
+      include: {
+        model: Goods,
+        as: 'goods_info',
+        attributes: ['id', 'goods_name', 'goods_price', 'goods_img']
+      },
+    })
+
+    return {
+      pageNum,
+      pageSize,
+      total: count,
+      list: rows
     }
   }
 }

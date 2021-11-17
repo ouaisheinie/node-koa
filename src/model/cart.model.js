@@ -4,6 +4,7 @@ const { DataTypes } = require('sequelize')
 
 // 连接数据库
 const seq = require('../db/seq')
+const Goods = require('./goods.model')
 
 const Cart = seq.define('zy_carts', {
   goods_id: {
@@ -33,5 +34,10 @@ const Cart = seq.define('zy_carts', {
 // Cart.sync({
 //   force: true
 // })
+
+Cart.belongsTo(Goods, {
+  foreignKey: 'goods_id',
+  as: 'goods_info'
+}) // Cart关联到Goods 用belongsTo 意思是cart里面有个goods_id 跟 goods 主键关联   查询出来的字段名叫goods_info
 
 module.exports = Cart

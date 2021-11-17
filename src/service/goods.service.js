@@ -1,5 +1,6 @@
 // 一个操作数据库的类 service 这一层主要是操作数据库
 const Goods = require('../model/goods.model')
+const { Op } = require('sequelize')
 
 class GoodsService {
   async createGoods(goods) {
@@ -52,6 +53,16 @@ class GoodsService {
       total: count,
       list: rows
     }
+  }
+
+  // carts 购物车中用到此功能  查看表中是否有该goods_id的商品
+  async validateGoodsId(goods_id) {
+    const res = await Goods.findAll({
+      where: {
+        id: goods_id
+      }
+    })
+    return res.length > 0 ? true : false
   }
 }
 
