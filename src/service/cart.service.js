@@ -48,6 +48,18 @@ class CartService {
       list: rows
     }
   }
+
+  async updateCarts(params) {
+    const { id, number, selected } = params
+    
+    const res = await Cart.findByPk(id) // findByPk 方法使用提供的主键从表中仅获得一个条目.
+    if (!res) return ''
+
+    number !== undefined ? (res.number = number) : ''
+    selected !== undefined ? (res.selected = selected) : ''
+
+    return await res.save()
+  }
 }
 
 module.exports = new CartService()
