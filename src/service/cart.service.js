@@ -51,7 +51,6 @@ class CartService {
 
   async updateCarts(params) {
     const { id, number, selected } = params
-    
     const res = await Cart.findByPk(id) // findByPk 方法使用提供的主键从表中仅获得一个条目.
     if (!res) return ''
 
@@ -59,6 +58,16 @@ class CartService {
     selected !== undefined ? (res.selected = selected) : ''
 
     return await res.save()
+  }
+
+  async removeCarts(ids) {
+    return await Cart.destroy({
+      where: {
+        id: {
+          [Op.in]: ids
+        }
+      }
+    })
   }
 }
 

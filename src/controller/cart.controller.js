@@ -1,4 +1,4 @@
-const { createOrUpdate, findCarts, updateCarts } = require('../service/cart.service')
+const { createOrUpdate, findCarts, updateCarts, removeCarts } = require('../service/cart.service')
 const { validateGoodsId } = require('../service/goods.service')
 const { invalidGoodsId, cartFormatError } = require('../constant/error.type')
 
@@ -50,13 +50,31 @@ class CartController {
       cartFormatError.message = 'number和selected不能同时为空'
       return ctx.app.emit('error', cartFormatError, ctx)
     }
-    // 2. 操作数据库
+    // 2. 操作数据库 
     const res = await updateCarts({ id, number, selected })
     // 3. 返回数据
     ctx.body = {
       code: 0,
       message: '更新购物车成功',
       result: res
+    }
+  }
+
+  // 删除购物车记录
+  async remove(ctx) {
+    const { ids } = ctx.request.body
+
+    const res = await removeCarts(ids)
+
+    if (res) {
+      ctx.body = {
+        code: 0,
+        message: '成功删除购物车内' + res +'条记录',
+        result: res
+      }
+    } else {
+      cartFormatError.message = '购物车内没有相对应的记录'
+      return ctx.app.emit('error', cartFormatError, ctx)
     }
   }
 }

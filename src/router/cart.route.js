@@ -1,6 +1,6 @@
 const Router = require('koa-router')
 
-const { add, validate_goods_id, findAll, update } = require('../controller/cart.controller')
+const { add, validate_goods_id, findAll, update, remove } = require('../controller/cart.controller')
 const { auth } = require('../middleware/auth.middleware')
 const { validator } = require('../middleware/cart.middleware')
 
@@ -16,6 +16,13 @@ router.get('/', auth, findAll)
 router.patch('/:id', auth, validator({
   number: { type: 'number', required: false },
   selected: { type: 'boolean', required: false }
-}),update)
+}), update)
+
+// 删除购物车商品
+/* 严格模式启用的话  不会把get、head、delete请求方法的body里的数据挂载到ctx.request里 这里要单独处理 去app.js里面配置parsedMethods方法*/
+router.delete('/', auth, validator({
+  ids: 'array' // 必选 类型是array
+}), remove)
+
 
 module.exports = router

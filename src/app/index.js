@@ -16,8 +16,9 @@ app.use(KoaBody({
   // multipart formidable 两个配置让koabody开启文件上传
   multipart: true,
   formidable: {
-    maxFileSize: 2 * 1024 * 1024
-  }
+    maxFileSize: 2 * 1024 * 1024,
+  },
+  parsedMethods: ['POST', 'PUT', 'PATCH', 'DELETE']
 })) // 在所有的路由之前注册koa-body 把传过来的数据 全写到ctx.request.body里面
 .use(KoaStatic(path.join(__dirname, '../upload')))
 .use(parameter(app)) // 后续的所有接口都有 ctx.verifyParams方法了
