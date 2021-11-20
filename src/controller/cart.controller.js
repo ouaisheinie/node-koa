@@ -1,4 +1,4 @@
-const { createOrUpdate, findCarts, updateCarts, removeCarts } = require('../service/cart.service')
+const { createOrUpdate, findCarts, updateCarts, removeCarts, selectAllCarts, unselecteAllCarts } = require('../service/cart.service')
 const { validateGoodsId } = require('../service/goods.service')
 const { invalidGoodsId, cartFormatError } = require('../constant/error.type')
 
@@ -75,6 +75,42 @@ class CartController {
     } else {
       cartFormatError.message = '购物车内没有相对应的记录'
       return ctx.app.emit('error', cartFormatError, ctx)
+    }
+  }
+
+  // 全选
+  async selectAll(ctx) {
+    const user_id = ctx.state.user.id // auth里面放进去的
+
+    const res = await selectAllCarts(user_id)
+    
+    if (res[0]) {
+      ctx.body = {
+        code: 0,
+        message: '已选中' + res[0] + '条记录',
+        result: res
+      }
+    } else {
+      cartFormatError.message = '未找到该用户在购物车内的记录'
+      ctx.app.emit('error', cartFormatError, ctx)
+    }
+  }
+
+  // 全不选
+  async unselecteAll(ctx) {
+    const user_id = ctx.state.user.id
+
+    const res = await unselecteAllCarts(user_id)
+
+    if (res[0]) {
+      ctx.body = {
+        code: 0,
+        message: '已取消选中' + res[0] + '条记录',
+        result: res
+      }
+    } else {
+      cartFormatError.message = '未找到该用户在购物车内的记录'
+      ctx.app.emit('error', cartFormatError, ctx)
     }
   }
 }

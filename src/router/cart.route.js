@@ -1,6 +1,6 @@
 const Router = require('koa-router')
 
-const { add, validate_goods_id, findAll, update, remove } = require('../controller/cart.controller')
+const { add, validate_goods_id, findAll, update, remove, selectAll, unselecteAll } = require('../controller/cart.controller')
 const { auth } = require('../middleware/auth.middleware')
 const { validator } = require('../middleware/cart.middleware')
 
@@ -24,5 +24,10 @@ router.delete('/', auth, validator({
   ids: 'array' // 必选 类型是array
 }), remove)
 
+// 全选
+router.post('/selectAll', auth, selectAll)
+
+// 全不选
+router.post('/unselectAll', auth, unselecteAll)
 
 module.exports = router
