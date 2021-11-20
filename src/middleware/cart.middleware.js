@@ -3,7 +3,7 @@ const { cartFormatError } = require('../constant/error.type')
 const validator = (rules) => { // rules 是规则对象
   return async (ctx, next) => {
     try {
-      ctx.verifyParams(rules)
+      await ctx.verifyParams(rules)
     } catch (error) {
       console.error(error)
       cartFormatError.result = error
