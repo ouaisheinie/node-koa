@@ -17,6 +17,16 @@ class AddrService {
     })
     return res
   }
+
+  // 更新地址
+  async updateAddr(id, data) {
+    const res = await Address.update(data, {
+      where: {
+        id
+      }
+    })
+    return res
+  }
 }
 
 module.exports = new AddrService()
