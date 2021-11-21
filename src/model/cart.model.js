@@ -4,7 +4,7 @@ const { DataTypes } = require('sequelize')
 
 // 连接数据库
 const seq = require('../db/seq')
-const Goods = require('./goods.model')
+const Goods = require('./goods.model') // 这里是用到了Goods
 
 const Cart = seq.define('zy_carts', {
   goods_id: {
