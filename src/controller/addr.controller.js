@@ -1,4 +1,5 @@
-const { createAddr, findAllAddr, updateAddr } = require('../service/addr.service')
+const { createAddr, findAllAddr, updateAddr, deleteAddr, setDefaultAddr } = require('../service/addr.service')
+const { setDefaulFormat } = require('../constant/error.type')
 
 class AddrController {
   async create(ctx) {
@@ -39,6 +40,35 @@ class AddrController {
       code: 0,
       message: '更新地址成功',
       result: res
+    }
+  }
+
+  async remove(ctx) {
+    const id = ctx.request.params.id
+
+    const res = await deleteAddr(id)
+
+    ctx.body = {
+      code: 0,
+      message: '删除地址成功',
+      result: res
+    }
+  }
+
+  async setDefault(ctx) {
+    const id = ctx.request.params.id
+    const user_id = ctx.state.user.id
+    const res = await setDefaultAddr(id, user_id)
+
+    if (res[0]) {
+      ctx.body = {
+        code: 0,
+        message: '设置默认成功',
+        resullt: res
+      }
+    } else {
+      setDefaulFormat.message = '设置默认失败，找不到该商品。'
+      return ctx.app.emit('error', setDefaulFormat, ctx)
     }
   }
 }

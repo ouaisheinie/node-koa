@@ -3,7 +3,7 @@ const router = new Router({ prefix: '/address' })
 
 const { auth } = require('../middleware/auth.middleware')
 const { validator } = require('../middleware/addr.middleware')
-const { create, findAll, update } = require('../controller/addr.controller')
+const { create, findAll, update, remove, setDefault } = require('../controller/addr.controller')
 
 const validator_params = {
   consignee: { type: 'string', required: true },
@@ -19,5 +19,11 @@ router.get('/', auth, findAll)
 
 // 修改接口
 router.put('/:id', auth, validator(validator_params), update)
+
+// 删除地址
+router.delete('/:id', auth, remove)
+
+// 设置默认地址
+router.patch('/:id', auth, setDefault)
 
 module.exports = router

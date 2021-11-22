@@ -95,5 +95,10 @@ module.exports = {
     code: '10501',
     message: '地址数据格式错误',
     result: ''
+  },
+  setDefaulFormat: {
+    code: '10601',
+    message: '设置默认错误',
+    result: ''
   }
 }
