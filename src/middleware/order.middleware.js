@@ -1,4 +1,4 @@
-const { addrFormatError } = require('../constant/error.type')
+const { orderFormatError } = require('../constant/error.type')
 
 const validator = (rules) => {
   return async (ctx, next) => {
@@ -6,8 +6,8 @@ const validator = (rules) => {
       ctx.verifyParams(rules)
     } catch (error) {
       console.error(error)
-      addrFormatError.result = error
-      return ctx.app.emit('error', addrFormatError, ctx)
+      orderFormatError.result = error
+      return ctx.app.emit('error', orderFormatError, ctx)
     }
     await next()
   }

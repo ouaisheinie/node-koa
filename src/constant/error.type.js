@@ -100,5 +100,10 @@ module.exports = {
     code: '10601',
     message: '设置默认错误',
     result: ''
+  },
+  orderFormatError: {
+    code: '10601',
+    message: '订单数据格式错误',
+    result: ''
   }
 }
