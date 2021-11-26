@@ -3,7 +3,7 @@ const router = new Router({ prefix: '/orders' })
 
 const { auth } = require('../middleware/auth.middleware')
 const { validator } = require('../middleware/order.middleware')
-const { create } = require('../controller/order.controller')
+const { create, findAll } = require('../controller/order.controller')
 
 // 添加订单
 router.post('/', auth, validator({
@@ -11,5 +11,8 @@ router.post('/', auth, validator({
   goods_info: 'string',
   total: 'string'
 }), create)
+
+// 获取订单列表
+router.get('/', auth, findAll)
 
 module.exports = router

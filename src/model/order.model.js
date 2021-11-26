@@ -31,7 +31,7 @@ const Order = seq.define('zy_orders', {
     allowNull: false,
     comment: '订单号'
   },
-  state: {
+  status: {
     type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 0,
@@ -39,7 +39,7 @@ const Order = seq.define('zy_orders', {
   }
 })
 
-Order.sync({ force: true })
+// Order.sync({ force: true })
 
 // 4 导出
 module.exports = Order
